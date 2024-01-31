@@ -24,3 +24,7 @@ application:
 logging:
   level:
     root: debug
+#springdoc:
+#  swagger-ui:
+#    path: /swagger
+#  packages-to-scan: com.app.taqaseem.jwt
