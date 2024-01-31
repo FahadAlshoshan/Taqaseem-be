@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+  <property name="LOG_PATH" value="/home/dev/taqaseem_logs"/>
+  <!-- You can override this to have a custom pattern-->
+  <property name="CONSOLE_LOG_PATTERN"
+    value="%d{dd-MM-yyyy HH:mm:ss.SSS} ~ %-5level ~ %thread ~ %class{0} ~ %method ~ %msg%n"/>
+
+
+  <!-- Appender to log to console-->
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>DEBUG</level>
+    </filter>
+    <encoder>
+      <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+      <charset>utf8</charset>
+    </encoder>
+  </appender>
+
+  <appender name="FILE"
+    class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_PATH}/taqaseem_debug.log</file>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <Pattern>
+        ${CONSOLE_LOG_PATTERN}
+      </Pattern>
+    </encoder>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- rollover daily -->
+      <fileNamePattern>${LOG_PATH}/archived/taqaseem_debug.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+      <maxHistory>5</maxHistory>
+    </rollingPolicy>
+
+  </appender>
+
+  <!-- Send logs to both console and file audit -->
+  <logger name="com.app" level="debug" additivity="false">
+    <appender-ref ref="FILE"/>
+  </logger>
+</configuration>

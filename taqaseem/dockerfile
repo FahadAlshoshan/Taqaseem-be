@@ -1,0 +1,17 @@
+FROM amazoncorretto:17-alpine as corretto-jdk
+RUN apk add --no-cache binutils
+RUN jlink \
+         --add-modules ALL-MODULE-PATH \
+         --strip-debug \
+         --no-man-pages \
+         --no-header-files \
+         --compress=2 \
+         --output /jre
+FROM alpine:latest
+ENV JAVA_HOME=/jre
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
+COPY --from=corretto-jdk /jre $JAVA_HOME
+RUN mkdir -p /home/dev/taqaseem_logs/ && chmod 777 /home/dev/taqaseem_logs/ -R
+WORKDIR /app
+COPY target/taqaseem-0.0.1-SNAPSHOT.jar  /app
+ENTRYPOINT ["java","-jar","--add-opens=java.base/java.net=ALL-UNNAMED","taqaseem-0.0.1-SNAPSHOT.jar"]

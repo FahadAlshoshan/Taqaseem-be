@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:sqlserver://localhost;encrypt=False;database=TAQASEEM
     username: sa
-    password: sa12345!!
+    password: sa12341234
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     hibernate:
@@ -21,10 +21,3 @@ application:
       expiration: 30
       refresh-token:
         expiration: 129600
-logging:
-  level:
-    root: debug
-#springdoc:
-#  swagger-ui:
-#    path: /swagger
-#  packages-to-scan: com.app.taqaseem.jwt
