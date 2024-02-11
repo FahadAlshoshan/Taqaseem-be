@@ -1,0 +1,26 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:mysql://google/taqaseemDB?cloudSqlInstance=helical-gist-413912:europe-west1:taqaseeminstance&socketFactory=com.google.cloud.sql.mysql.SocketFactory
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        default_schema: public
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: ${INIT_SQL:never}
+application:
+  security:
+    jwt:
+      secret-key: dc1acb74ab12378ad211e350138ee7b357c1a51adc1acb74ab12378ad211e350138ee7b357c1a51adc1acb74ab12378ad211e350138ee7b357c1a51adc1acb74ab12378ad211e350138ee7b357c1a51a
+      expiration: 30
+      refresh-token:
+        expiration: 129600
