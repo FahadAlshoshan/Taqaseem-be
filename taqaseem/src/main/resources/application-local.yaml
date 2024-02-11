@@ -3,13 +3,16 @@ spring:
     activate:
       on-profile: local
   datasource:
-    url: jdbc:sqlserver://localhost;encrypt=False;database=TAQASEEM
-    username: sa
-    password: sa12341234
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:mysql://google/taqaseemDB?cloudSqlInstance=helical-gist-413912:europe-west1:taqaseeminstance&socketFactory=com.google.cloud.sql.mysql.SocketFactory
+    username: root
+    password: root
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        default_schema: public
     defer-datasource-initialization: true
   sql:
     init:
