@@ -10,17 +10,6 @@ services:
       - label:disable
     network_mode: "host"
 
-  database:
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: taqaseem-database
-    command: bash -c "/usr/src/sql/init.sh"
-    environment:
-      ACCEPT_EULA: Y
-      SA_PASSWORD: sa12341234
-    volumes:
-      - ./Database:/usr/src/sql/
-    network_mode: "host"
-
   redis:
     container_name: taqaseem-cache
     image: redis:latest
