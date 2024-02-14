@@ -1,12 +1,10 @@
 package com.app.taqaseem.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.util.Collection;
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,15 +19,34 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "USERS")
-public class UserInfo implements UserDetails {
+@Table(name = "User")
+public class User implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "ID")
+  @Column(name = "id")
   private long id;
 
+  @Column(name = "PhoneNumber", unique = true, nullable = false, length = 15)
   private String phoneNumber;
+
+  @Column(name = "Name", length = 255)
+  private String name;
+
+  @Temporal(TemporalType.DATE)
+  @Column(name = "Birthday")
+  private Date birthday;
+
+  @Column(name = "IsRegistered", nullable = false)
+  private Boolean isRegistered = false;
+
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "CreatedAt", nullable = false)
+  private Date createdAt;
+
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "UpdatedAt", nullable = false)
+  private Date updatedAt;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

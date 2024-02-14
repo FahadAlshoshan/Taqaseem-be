@@ -1,7 +1,7 @@
 package com.app.taqaseem.jwt;
 
 import com.app.taqaseem.exception.InvalidJwtErrorException;
-import com.app.taqaseem.model.UserInfo;
+import com.app.taqaseem.model.User;
 import com.app.taqaseem.repository.UserRepository;
 import com.app.taqaseem.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class JWTService {
       throw new InvalidJwtErrorException("Invalid refresh token, phone number is null");
     }
 
-    UserInfo user =
+    User user =
         userRepository
             .findByPhoneNumber(phoneNumber)
             .orElseThrow(() -> new UsernameNotFoundException("Phone number not found"));
@@ -47,10 +47,10 @@ public class JWTService {
   }
 
   public JWTDTO generateNewAccessAndRefreshTokenForUser(String phoneNumber) {
-    UserInfo userInfo =
+    User userInfo =
         userRepository
             .findByPhoneNumber(phoneNumber)
-            .orElse(userRepository.save(UserInfo.builder().phoneNumber(phoneNumber).build()));
+            .orElse(userRepository.save(User.builder().phoneNumber(phoneNumber).build()));
     return JWTDTO
         .builder()
         .accessToken(jwtUtil.generateAccessToken(userInfo))
