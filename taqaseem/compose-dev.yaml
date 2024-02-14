@@ -1,0 +1,16 @@
+services:
+  backend-app:
+    container_name: taqaseem-backend
+    image: taqaseem-backend:latest
+    build: .
+    environment:
+      - "JAVA_TOOL_OPTIONS=-Duser.timezone=\"Asia/Riyadh\""
+      - "SPRING_PROFILES_ACTIVE=dev"
+    security_opt:
+      - label:disable
+    network_mode: "host"
+
+  redis:
+    container_name: taqaseem-cache
+    image: redis:latest
+    network_mode: "host"

@@ -30,6 +30,15 @@
       <version>2.3.0</version>
     </dependency>
     <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.cloud.sql</groupId>
+      <artifactId>mysql-socket-factory</artifactId>
+      <version>1.10.0</version>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
@@ -93,7 +102,6 @@
       <scope>runtime</scope>
     </dependency>
   </dependencies>
-
   <build>
     <plugins>
       <plugin>
@@ -156,6 +164,12 @@
       <id>prod</id>
       <properties>
         <activeProfile>prod</activeProfile>
+      </properties>
+    </profile>
+    <profile>
+      <id>dev</id>
+      <properties>
+        <activeProfile>dev</activeProfile>
       </properties>
     </profile>
   </profiles>

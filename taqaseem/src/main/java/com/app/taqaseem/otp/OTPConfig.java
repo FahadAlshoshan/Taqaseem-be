@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 public class OTPConfig {
 
   @Bean("otpProvider")
-  @Profile("local")
+  @Profile({"local", "dev"})
   public OTPProvider otpProviderLocal() {
     return new OTPProviderLocal();
   }
