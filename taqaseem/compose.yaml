@@ -1,7 +1,6 @@
 services:
-  backend-app:
+  backend:
     container_name: taqaseem-backend
-    image: taqaseem-backend:latest
     build: .
     environment:
       - "JAVA_TOOL_OPTIONS=-Duser.timezone=\"Asia/Riyadh\""
@@ -11,15 +10,11 @@ services:
     network_mode: "host"
 
   database:
-    image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: taqaseem-database
-    command: bash -c "/usr/src/sql/init.sh"
-    environment:
-      ACCEPT_EULA: Y
-      SA_PASSWORD: sa12341234
-    volumes:
-      - ./Database:/usr/src/sql/
-    network_mode: "host"
+    build: Database/
+    restart: always
+    ports:
+      - "1433:1433"
 
   redis:
     container_name: taqaseem-cache

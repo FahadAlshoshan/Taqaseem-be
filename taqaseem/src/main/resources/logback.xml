@@ -27,17 +27,16 @@
         ${CONSOLE_LOG_PATTERN}
       </Pattern>
     </encoder>
-
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <!-- rollover daily -->
       <fileNamePattern>${LOG_PATH}/archived/taqaseem_debug.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
       <maxHistory>5</maxHistory>
     </rollingPolicy>
-
   </appender>
 
   <!-- Send logs to both console and file audit -->
   <logger name="com.app" level="debug" additivity="false">
     <appender-ref ref="FILE"/>
+    <appender-ref ref="CONSOLE"/>
   </logger>
 </configuration>

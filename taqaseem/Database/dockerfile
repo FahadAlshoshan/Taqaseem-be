@@ -1,6 +1,12 @@
-FROM mcr.microsoft.com/mssql/server:2019-latest
-WORKDIR /usr/src/app
-COPY . /usr/src/app
-ENV MSSQL_SA_PASSWORD sa12345!
+FROM mcr.microsoft.com/mssql/server:2022-latest
+#USER root
+WORKDIR /usr/src/sql
+COPY . /usr/src/sql
+ENV MSSQL_SA_PASSWORD Sa12341234
+ENV SA_PASSWORD Sa12341234
 ENV ACCEPT_EULA Y
-RUN ./init.sh
+#RUN chmod +x /usr/src/sql/init.sh
+#RUN chmod +x /usr/src/sql/run-initialization.sh
+#USER mssql
+RUN /opt/mssql/bin/sqlservr & sleep 50 && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Sa12341234 -i init.sql
+#ENTRYPOINT /bin/bash ./init.sh
