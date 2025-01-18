@@ -5,8 +5,4 @@ COPY . /usr/src/sql
 ENV MSSQL_SA_PASSWORD Sa12341234
 ENV SA_PASSWORD Sa12341234
 ENV ACCEPT_EULA Y
-#RUN chmod +x /usr/src/sql/init.sh
-#RUN chmod +x /usr/src/sql/run-initialization.sh
-#USER mssql
-RUN /opt/mssql/bin/sqlservr & sleep 50 && /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P Sa12341234 -i init.sql
-#ENTRYPOINT /bin/bash ./init.sh
+ENTRYPOINT /opt/mssql/bin/sqlservr 
