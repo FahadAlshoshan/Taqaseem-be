@@ -1,22 +1,12 @@
 services:
   backend:
     container_name: taqaseem-backend
-    build: .
+    image: fahadalshoshan/taqaseem-be:latest
     environment:
       - "JAVA_TOOL_OPTIONS=-Duser.timezone=\"Asia/Riyadh\""
       - "SPRING_PROFILES_ACTIVE=local"
     security_opt:
       - label:disable
-    network_mode: "host"
-
-  database:
-    container_name: taqaseem-database
-    build: Database/
-    restart: always
-    ports:
-      - "1433:1433"
-
-  redis:
-    container_name: taqaseem-cache
-    image: redis:latest
+    volumes:
+      - /home/dev/taqaseem_logs:/home/dev/taqaseem_logs
     network_mode: "host"
