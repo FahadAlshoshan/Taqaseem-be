@@ -11,6 +11,7 @@ spring:
     hibernate:
       ddl-auto: update
     defer-datasource-initialization: true
+    show-sql: on
   sql:
     init:
       mode: ${INIT_SQL:never}

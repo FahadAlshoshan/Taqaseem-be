@@ -1,11 +1,7 @@
 package com.app.taqaseem.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.util.Collection;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +25,7 @@ public class UserInfo implements UserDetails {
   @Column(name = "ID")
   private long id;
 
+  @Column(unique = true, nullable = false)
   private String phoneNumber;
 
   @Override

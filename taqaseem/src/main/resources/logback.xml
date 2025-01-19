@@ -35,8 +35,8 @@
   </appender>
 
   <!-- Send logs to both console and file audit -->
-  <logger name="com" level="debug" additivity="false">
+  <root level="debug" additivity="false">
     <appender-ref ref="FILE"/>
     <appender-ref ref="CONSOLE"/>
-  </logger>
+  </root>
 </configuration>
