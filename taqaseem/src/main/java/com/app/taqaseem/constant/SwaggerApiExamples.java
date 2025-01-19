@@ -23,8 +23,8 @@ public class SwaggerApiExamples {
   public static final String API_EXAMPLE_200_OTP_AUTHENTICATE =
       """
           {
-              "message": "Successfully authenticated!",
-              "lang": "EN",
+              "messageEN": "Successfully authenticated",
+              "messageAR": "تم توثيق رمز التحقق بنجاح",
               "jwt":
               {
                 "access_token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwNTk1OTA0MDU3IiwiaWF0IjoxNzA2Njg1NjgzLCJleHAiOjE3MDY2ODc0ODN9.kDsnfC_TCKve8tLYRIsBahkeZib1n5lI5pU1bJu9wj8",
@@ -36,8 +36,8 @@ public class SwaggerApiExamples {
   public static final String API_EXAMPLE_401_OTP_AUTHENTICATE =
       """
           {
-              "message": "Authentication unsuccessful!",
-              "lang": "EN",
+              "messageEN": "Authentication failed",
+              "messageAR": "فشل توثيق رمز التحقق",
               "jwt":
               {
                 "access_token": null,
