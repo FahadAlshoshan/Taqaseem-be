@@ -33,7 +33,7 @@ public class SwaggerApiExamples {
               "authenticated": true
           }
       """;
-  public static final String API_EXAMPLE_401_OTP_AUTHENTICATE =
+  public static final String API_EXAMPLE_203_OTP_AUTHENTICATE =
       """
           {
               "messageEN": "Authentication failed",
