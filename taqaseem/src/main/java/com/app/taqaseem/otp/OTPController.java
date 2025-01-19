@@ -1,10 +1,7 @@
 package com.app.taqaseem.otp;
 
-import static com.app.taqaseem.constant.SwaggerApiExamples.API_EXAMPLE_200_OTP_AUTHENTICATE;
-import static com.app.taqaseem.constant.SwaggerApiExamples.API_EXAMPLE_401_OTP_AUTHENTICATE;
-import static com.app.taqaseem.constant.SwaggerApiExamples.API_EXAMPLE_500_OTP_GENERATE;
-import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static com.app.taqaseem.constant.SwaggerApiExamples.*;
+import static org.springframework.http.HttpStatus.*;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -67,14 +64,14 @@ public class OTPController {
                       @ExampleObject(description = "OK", value = API_EXAMPLE_200_OTP_AUTHENTICATE))
             }),
         @ApiResponse(
-            responseCode = "401",
+            responseCode = "203",
             description = "OTP not validated",
             content = {
               @Content(
                   mediaType = "application/json",
                   schema = @Schema(implementation = OTPAuthenticateResponseDTO.class),
                   examples =
-                      @ExampleObject(description = "OK", value = API_EXAMPLE_401_OTP_AUTHENTICATE))
+                      @ExampleObject(description = "OK", value = API_EXAMPLE_203_OTP_AUTHENTICATE))
             })
       })
   public ResponseEntity<?> validateOTP(
@@ -84,6 +81,6 @@ public class OTPController {
 
     return new ResponseEntity<>(
         otpAuthenticateResponseDTO,
-        otpAuthenticateResponseDTO.isAuthenticated() ? OK : UNAUTHORIZED);
+        otpAuthenticateResponseDTO.isAuthenticated() ? OK : NON_AUTHORITATIVE_INFORMATION);
   }
 }
