@@ -8,6 +8,6 @@ public class OTPProviderLocal implements OTPProvider {
 
   @Override
   public String sendOTP(String phoneNumber) {
-    return "1111";
+    return "1234";
   }
 }

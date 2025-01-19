@@ -9,7 +9,7 @@ import lombok.Data;
 @Builder
 public class OTPAuthenticateResponseDTO implements Serializable {
   private boolean isAuthenticated;
-  private String message;
-  private String lang;
+  private String messageEN;
+  private String messageAR;
   private JWTDTO jwt;
 }

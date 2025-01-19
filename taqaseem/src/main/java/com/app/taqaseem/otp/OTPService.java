@@ -5,6 +5,8 @@ import com.app.taqaseem.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static com.app.taqaseem.constant.Messages.*;
+
 @Service
 @RequiredArgsConstructor
 public class OTPService {
@@ -23,15 +25,20 @@ public class OTPService {
         redisUtil.isPhoneAuthenticated(
             otpAuthenticateRequestDTO.getOtp(), otpAuthenticateRequestDTO.getPhoneNumber());
 
+    if (isAuthenticated) {
+      return OTPAuthenticateResponseDTO.builder()
+              .isAuthenticated(true)
+              .messageEN(SUCCESSFUL_OTP_AUTHENTICATION_MESSAGE_EN)
+              .messageAR(SUCCESSFUL_OTP_AUTHENTICATION_MESSAGE_AR)
+              .jwt(jwtService.generateNewAccessAndRefreshTokenForUser(
+                      otpAuthenticateRequestDTO.getPhoneNumber()))
+              .build();
+    }
     return OTPAuthenticateResponseDTO.builder()
-        .isAuthenticated(isAuthenticated)
-        .lang("EN")
-        .message(isAuthenticated ? "Successfully authenticated!" : "Authentication unsuccessful!")
-        .jwt(
-            isAuthenticated
-                ? jwtService.generateNewAccessAndRefreshTokenForUser(
-                    otpAuthenticateRequestDTO.getPhoneNumber())
-                : null)
-        .build();
+            .isAuthenticated(false)
+            .messageEN(UNSUCCESSFUL_OTP_AUTHENTICATION_MESSAGE_EN)
+            .messageAR(UNSUCCESSFUL_OTP_AUTHENTICATION_MESSAGE_AR)
+            .jwt(null)
+            .build();
   }
 }
