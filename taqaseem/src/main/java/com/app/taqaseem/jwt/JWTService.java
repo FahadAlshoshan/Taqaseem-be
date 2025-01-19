@@ -6,8 +6,10 @@ import com.app.taqaseem.repository.UserRepository;
 import com.app.taqaseem.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -46,12 +48,19 @@ public class JWTService {
     return newJWTDTO;
   }
 
+  @Transactional
   public JWTDTO generateNewAccessAndRefreshTokenForUser(String phoneNumber) {
-    UserInfo userInfo =
-        userRepository
-            .findByPhoneNumber(phoneNumber)
-            .orElse(userRepository.save(UserInfo.builder().phoneNumber(phoneNumber).build()));
-    return JWTDTO
+      UserInfo userInfo =  userRepository.findByPhoneNumber(phoneNumber)
+              .orElseGet(() -> {
+                try {
+                  return userRepository.save(UserInfo.builder().phoneNumber(phoneNumber).build());
+                } catch (DataIntegrityViolationException e) {
+                  return userRepository.findByPhoneNumber(phoneNumber)
+                          .orElseThrow(() -> new IllegalStateException("Unexpected state"));
+                }
+              });
+
+      return JWTDTO
         .builder()
         .accessToken(jwtUtil.generateAccessToken(userInfo))
         .refreshToken(jwtUtil.generateRefreshToken(userInfo))
