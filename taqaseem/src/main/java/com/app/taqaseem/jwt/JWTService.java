@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -48,10 +47,14 @@ public class JWTService {
   }
 
   public JWTDTO generateNewAccessAndRefreshTokenForUser(UserInfo user) {
-      return JWTDTO
-        .builder()
-        .accessToken(jwtUtil.generateAccessToken(user))
-        .refreshToken(jwtUtil.generateRefreshToken(user))
-        .build();
+      JWTDTO newJWTDTO = JWTDTO
+              .builder()
+              .accessToken(jwtUtil.generateAccessToken(user))
+              .refreshToken(jwtUtil.generateRefreshToken(user))
+              .build();
+
+      redisUtil.saveActiveAccessToken(newJWTDTO.getAccessToken(), user.getPhoneNumber());
+
+      return newJWTDTO;
   }
 }

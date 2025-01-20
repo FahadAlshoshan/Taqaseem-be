@@ -1,7 +1,9 @@
 package com.app.taqaseem.jwt;
 
+import com.app.taqaseem.exception.InvalidJwtErrorException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -10,11 +12,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
+@Log4j2
 public class JWTUtil {
   private final int MS_IN_MINUTE = 60000;
 
@@ -28,7 +33,15 @@ public class JWTUtil {
   private long refreshExpiration;
 
   public String extractPhoneNumber(String token) {
-    return extractClaim(token, Claims::getSubject);
+    try {
+      return extractClaim(token, Claims::getSubject);
+    } catch (MalformedJwtException e){
+        throw new InvalidJwtErrorException("Malformed JWT token");
+    }
+    catch (Exception e) {
+      log.error("Error extracting phone number", e);
+      throw new InvalidJwtErrorException(e.getMessage());
+    }
   }
 
   public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
