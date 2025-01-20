@@ -8,8 +8,10 @@ import lombok.Data;
 @Data
 @Builder
 public class OTPAuthenticateResponseDTO implements Serializable {
+  private Integer status;
   private boolean isAuthenticated;
   private String messageEN;
   private String messageAR;
   private JWTDTO jwt;
 }
+
