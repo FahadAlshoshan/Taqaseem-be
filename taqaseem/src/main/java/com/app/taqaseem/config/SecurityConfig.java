@@ -41,6 +41,7 @@ public class SecurityConfig {
   };
   private final JWTAuthorizationFilter jwtAuthorizationFilter;
   private final CustomUserDetailService customUserDetailService;
+  private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -51,6 +52,7 @@ public class SecurityConfig {
                     .permitAll()
                     .requestMatchers("/api/v1/taqaseem/**")
                     .authenticated())
+            .exceptionHandling(exception -> exception.authenticationEntryPoint(customAuthenticationEntryPoint))
         .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
         .authenticationProvider(authenticationProvider())
         .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)

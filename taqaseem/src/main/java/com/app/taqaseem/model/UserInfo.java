@@ -3,6 +3,8 @@ package com.app.taqaseem.model;
 import jakarta.persistence.*;
 
 import java.util.Collection;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,9 +30,12 @@ public class UserInfo implements UserDetails {
   @Column(unique = true, nullable = false)
   private String phoneNumber;
 
+  @Column()
+  private String name;
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return null;
+    return List.of(() -> "ROLE_USER");
   }
 
   @Override
