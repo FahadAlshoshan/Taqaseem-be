@@ -11,6 +11,6 @@ import lombok.Data;
 public class OTPAuthenticateRequestDTO implements Serializable {
   @isValidPhoneNumber
   private String phoneNumber;
-  @Pattern(regexp = "\\d{4}")
+  @Pattern(regexp = "\\d{6}")
   private String otp;
 }
