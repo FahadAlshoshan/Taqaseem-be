@@ -1,0 +1,27 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:6543/postgres?user=postgres.dlzmvgyaqtpgvviiiqbb
+    username: postgres
+    password: dfsITvo0AyaGqMDT
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+    show-sql: on
+  sql:
+    init:
+      mode: ${INIT_SQL:never}
+application:
+  security:
+    jwt:
+      secret-key: dc1acb74ab12378ad211e350138ee7b357c1a51adc1acb74ab12378ad211e350138ee7b357c1a51adc1acb74ab12378ad211e350138ee7b357c1a51adc1acb74ab12378ad211e350138ee7b357c1a51a
+      expiration: 30
+      refresh-token:
+        expiration: 129600
+logging:
+  level:
+    root: debug
