@@ -92,6 +92,11 @@
       <artifactId>mssql-jdbc</artifactId>
       <scope>runtime</scope>
     </dependency>
+      <dependency>
+          <groupId>org.postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <version>42.2.10</version>
+      </dependency>
   </dependencies>
 
   <build>
@@ -152,11 +157,17 @@
         <activeByDefault>true</activeByDefault>
       </activation>
     </profile>
-    <profile>
-      <id>prod</id>
-      <properties>
-        <activeProfile>prod</activeProfile>
-      </properties>
-    </profile>
+      <profile>
+          <id>prod</id>
+          <properties>
+              <activeProfile>prod</activeProfile>
+          </properties>
+      </profile>
+      <profile>
+          <id>dev</id>
+          <properties>
+              <activeProfile>dev</activeProfile>
+          </properties>
+      </profile>
   </profiles>
 </project>
