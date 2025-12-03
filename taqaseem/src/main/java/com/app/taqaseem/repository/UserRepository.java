@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends CrudRepository<UserInfo, Long> {
   Optional<UserInfo> findByPhoneNumber(String phoneNumber);
+  boolean existsByUsername(String username);
 }
