@@ -2,7 +2,7 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
-    <property name="LOG_PATH" value="/home/dev/taqaseem_logs"/>
+    <property name="LOG_PATH" value="${user.home}/taqaseem_logs"/>
     <property name="CONSOLE_LOG_PATTERN"
               value="%d{dd-MM-yyyy HH:mm:ss.SSS} ~ %-5level ~ %thread ~ %class{0} ~ %method ~ %msg%n"/>
 

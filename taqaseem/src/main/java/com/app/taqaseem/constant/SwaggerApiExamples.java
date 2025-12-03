@@ -46,5 +46,32 @@ public class SwaggerApiExamples {
               "authenticated": false
           }
       """;
+  
+  public static final String API_EXAMPLE_200_CHECK_USERNAME_AVAILABLE =
+      """
+          {
+              "username": "Nawaf",
+              "available": true,
+              "message": "Username is available"
+          }
+      """;
+  
+  public static final String API_EXAMPLE_200_CHECK_USERNAME_TAKEN =
+      """
+          {
+              "username": "existing_user",
+              "available": false,
+              "message": "Username is already taken"
+          }
+      """;
+  
+  public static final String API_EXAMPLE_400_CHECK_USERNAME_INVALID =
+      """
+          {
+              "timestamp": "2025-12-03T15:52:00",
+              "status": 400,
+              "message": "Username must be between 3 and 20 characters"
+          }
+      """;
 
 }

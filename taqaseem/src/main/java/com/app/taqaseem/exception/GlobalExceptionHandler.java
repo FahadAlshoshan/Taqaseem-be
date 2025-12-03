@@ -2,21 +2,24 @@ package com.app.taqaseem.exception;
 
 import com.app.taqaseem.dto.ApiResponse;
 import com.app.taqaseem.dto.ChangeNameResponseDTO;
+import com.app.taqaseem.dto.ErrorResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.app.taqaseem.constant.Messages.UN_SUCCESSFUL_USER_NAME_CHANGE_MESSAGE_AR;
 import static com.app.taqaseem.constant.Messages.UN_SUCCESSFUL_USER_NAME_CHANGE_MESSAGE_EN;
@@ -29,21 +32,14 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(CustomRedisException.class)
-  public ResponseEntity<?> handleRedisException(CustomRedisException e) {
-    return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(Map.of(
-            "timestamp", LocalDateTime.now(),
-            "status", INTERNAL_SERVER_ERROR.value(),
-            "message", e.getMessage()
-    ));
-
+  public ResponseEntity<ErrorResponse> handleRedisException(CustomRedisException e) {
+    return ResponseEntity.status(INTERNAL_SERVER_ERROR)
+            .body(ErrorResponse.of(INTERNAL_SERVER_ERROR, e.getMessage()));
   }
   @ExceptionHandler(UsernameNotFoundException.class)
-  public ResponseEntity<?> handleUsernameNotFoundException(UsernameNotFoundException e) {
-    return ResponseEntity.status(UNAUTHORIZED).body(Map.of(
-            "timestamp", LocalDateTime.now(),
-            "status", UNAUTHORIZED.value(),
-            "message", e.getMessage()
-    ));
+  public ResponseEntity<ErrorResponse> handleUsernameNotFoundException(UsernameNotFoundException e) {
+    return ResponseEntity.status(UNAUTHORIZED)
+            .body(ErrorResponse.of(UNAUTHORIZED, e.getMessage()));
   }
 
   @ExceptionHandler(UserNotFoundException.class)
@@ -52,12 +48,29 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(InvalidJwtErrorException.class)
-  public ResponseEntity<?> handleInvalidJwtErrorException(InvalidJwtErrorException ex, HttpServletRequest request) {
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
-            "timestamp", LocalDateTime.now(),
-            "status", HttpStatus.UNAUTHORIZED.value(),
-            "message", ex.getMessage()
-    ));
+  public ResponseEntity<ErrorResponse> handleInvalidJwtErrorException(InvalidJwtErrorException ex, HttpServletRequest request) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(ErrorResponse.of(HttpStatus.UNAUTHORIZED, ex.getMessage()));
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException ex) {
+    String message = ex.getConstraintViolations().stream()
+            .map(ConstraintViolation::getMessage)
+            .collect(Collectors.joining(", "));
+    
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(ErrorResponse.of(HttpStatus.BAD_REQUEST, message));
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    String message = ex.getBindingResult().getFieldErrors().stream()
+            .map(error -> error.getField() + ": " + error.getDefaultMessage())
+            .collect(Collectors.joining(", "));
+    
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(ErrorResponse.of(HttpStatus.BAD_REQUEST, message));
   }
 
 }
