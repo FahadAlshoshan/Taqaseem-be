@@ -1,4 +1,4 @@
-package com.app.taqaseem.jwt;
+package com.app.taqaseem.security.jwt;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;

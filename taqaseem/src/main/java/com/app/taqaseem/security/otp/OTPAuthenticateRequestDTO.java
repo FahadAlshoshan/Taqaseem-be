@@ -1,4 +1,4 @@
-package com.app.taqaseem.otp;
+package com.app.taqaseem.security.otp;
 
 import com.app.taqaseem.validation.isValidPhoneNumber;
 import jakarta.validation.constraints.Pattern;

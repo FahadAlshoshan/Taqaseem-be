@@ -1,4 +1,4 @@
-package com.app.taqaseem.otp;
+package com.app.taqaseem.security.otp;
 
 import static com.app.taqaseem.constant.SwaggerApiExamples.*;
 import static org.springframework.http.HttpStatus.*;

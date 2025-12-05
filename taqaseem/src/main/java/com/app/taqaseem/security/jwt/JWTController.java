@@ -1,4 +1,4 @@
-package com.app.taqaseem.jwt;
+package com.app.taqaseem.security.jwt;
 
 import static com.app.taqaseem.constant.SwaggerApiExamples.API_EXAMPLE_200_REFRESH_JWT;
 import static com.app.taqaseem.constant.SwaggerApiExamples.API_EXAMPLE_401_REFRESH_JWT;

@@ -22,6 +22,3 @@ application:
       expiration: 30
       refresh-token:
         expiration: 129600
-logging:
-  level:
-    root: debug

@@ -1,6 +1,7 @@
-package com.app.taqaseem.jwt;
+package com.app.taqaseem.security.jwt;
 
 import com.app.taqaseem.exception.InvalidJwtErrorException;
+import com.app.taqaseem.security.TaqaseemUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -15,7 +16,6 @@ import java.util.function.Function;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -49,32 +49,32 @@ public class JWTUtil {
     return claimsResolver.apply(claims);
   }
 
-  public String generateAccessToken(UserDetails userDetails) {
+  public String generateAccessToken(TaqaseemUserDetails userDetails) {
     return generateAccessToken(new HashMap<>(), userDetails);
   }
 
-  public String generateAccessToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+  public String generateAccessToken(Map<String, Object> extraClaims, TaqaseemUserDetails userDetails) {
     return buildToken(extraClaims, userDetails, jwtExpiration);
   }
 
-  public String generateRefreshToken(UserDetails userDetails) {
+  public String generateRefreshToken(TaqaseemUserDetails userDetails) {
     return buildToken(new HashMap<>(), userDetails, refreshExpiration);
   }
 
   private String buildToken(
-      Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
+      Map<String, Object> extraClaims, TaqaseemUserDetails userDetails, long expiration) {
     return Jwts.builder()
         .setClaims(extraClaims)
-        .setSubject(userDetails.getUsername())
+        .setSubject(userDetails.getPhoneNumber())
         .setIssuedAt(new Date(System.currentTimeMillis()))
         .setExpiration(new Date(System.currentTimeMillis() + (expiration * MS_IN_MINUTE)))
         .signWith(getSignInKey(), SignatureAlgorithm.HS256)
         .compact();
   }
 
-  public boolean isTokenValid(String token, UserDetails userDetails) {
+  public boolean isTokenValid(String token, TaqaseemUserDetails userDetails) {
     final String phoneNumber = extractPhoneNumber(token);
-    return (phoneNumber.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    return (phoneNumber.equals(userDetails.getPhoneNumber())) && !isTokenExpired(token);
   }
 
   private boolean isTokenExpired(String token) {

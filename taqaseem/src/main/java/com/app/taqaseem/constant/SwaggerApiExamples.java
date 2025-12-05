@@ -30,7 +30,8 @@ public class SwaggerApiExamples {
                 "access_token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwNTk1OTA0MDU3IiwiaWF0IjoxNzA2Njg1NjgzLCJleHAiOjE3MDY2ODc0ODN9.kDsnfC_TCKve8tLYRIsBahkeZib1n5lI5pU1bJu9wj8",
                 "refresh_token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwNTk1OTA0MDU3IiwiaWF0IjoxNzA2Njg1NjAyLCJleHAiOjE3MTQ0NjE2MDJ9.I4a3TtjXrVTTg2aVHo5LNGvv_IxwSaacZfvdwA-N9k4"
               },
-              "authenticated": true
+              "authenticated": true,
+              "registered" : true
           }
       """;
   public static final String API_EXAMPLE_203_OTP_AUTHENTICATE =
@@ -43,7 +44,8 @@ public class SwaggerApiExamples {
                 "access_token": null,
                 "refresh_token": null
               },
-              "authenticated": false
+              "authenticated": false,
+              "registered" : false
           }
       """;
   
@@ -73,5 +75,30 @@ public class SwaggerApiExamples {
               "message": "Username must be between 3 and 20 characters"
           }
       """;
+    public static final String API_EXAMPLE_200_REGISTER_USER =
+      """
+          {
+              "firstName": "test",
+              "username": "test",
+              "phoneNumber": "0595904058",
+              "createdAt": "2025-12-05T19:20:13.292651"
+          }
+      """;
 
+    public static final String API_EXAMPLE_400_REGISTER_USER_USERNAME_TAKEN =
+            """
+                {
+                    "timestamp": "2025-12-03T15:52:00",
+                    "status": 400,
+                    "message": "username: Username is already taken"
+                }
+            """;
+    public static final String API_EXAMPLE_400_REGISTER_USER_ALREADY_REGISTERED =
+            """
+                {
+                    "timestamp": "2025-12-03T15:52:00",
+                    "status": 400,
+                    "message": "User already registered"
+                }
+            """;
 }
