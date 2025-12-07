@@ -25,7 +25,7 @@ public class UserInfo implements TaqaseemUserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
-    private long id;
+    private Long id;
 
     @Column(unique = true, nullable = false)
     private String phoneNumber;
@@ -36,9 +36,9 @@ public class UserInfo implements TaqaseemUserDetails {
     @Column()
     private String name;
 
-    @Column(name = "is_registered", nullable = false)
+    @Column(nullable = false)
     @Builder.Default
-    private Boolean isRegistered = false;
+    private boolean registered = false;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -53,25 +53,6 @@ public class UserInfo implements TaqaseemUserDetails {
         return List.of(() -> "ROLE_USER");
     }
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -86,11 +67,6 @@ public class UserInfo implements TaqaseemUserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
-    }
-
-    @Override
-    public boolean isRegistered() {
-        return isRegistered;
     }
 
     @Override

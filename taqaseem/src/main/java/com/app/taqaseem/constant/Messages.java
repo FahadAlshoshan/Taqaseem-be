@@ -2,7 +2,7 @@ package com.app.taqaseem.constant;
 
 public class Messages {
     public static final String USER_NOT_FOUND_MESSAGE_EN = "User not found";
-    public static final String USER_NOT_FOUND_MESSAGE_AR = "المستخدم لا يوجد";
+    public static final String USER_NOT_FOUND_MESSAGE_AR = "المستخدم غير موجود";
 
     public static final String USER_ALREADY_REGISTERED_EN = "User already registered";
     public static final String USER_ALREADY_REGISTERED_AR = "المستخدم مسجل مسبقاََ";

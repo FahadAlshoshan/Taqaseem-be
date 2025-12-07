@@ -37,7 +37,7 @@ public class UserManagementService {
 
         userFromDB.setUsername(registerUserRequestDTO.getUsername());
         userFromDB.setName(registerUserRequestDTO.getFirstName());
-        userFromDB.setIsRegistered(true);
+        userFromDB.setRegistered(true);
 
         UserInfo savedUser = userRepository.save(userFromDB);
 
