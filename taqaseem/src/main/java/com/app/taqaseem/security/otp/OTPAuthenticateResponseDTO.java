@@ -1,6 +1,6 @@
-package com.app.taqaseem.otp;
+package com.app.taqaseem.security.otp;
 
-import com.app.taqaseem.jwt.JWTDTO;
+import com.app.taqaseem.security.jwt.JWTDTO;
 import java.io.Serializable;
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Builder
 public class OTPAuthenticateResponseDTO implements Serializable {
-  private Integer status;
+  private boolean isRegistered;
   private boolean isAuthenticated;
   private String messageEN;
   private String messageAR;

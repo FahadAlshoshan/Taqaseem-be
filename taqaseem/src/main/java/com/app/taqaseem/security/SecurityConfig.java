@@ -1,10 +1,8 @@
-package com.app.taqaseem.config;
+package com.app.taqaseem.security;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
-import com.app.taqaseem.jwt.JWTAuthorizationFilter;
-import com.app.taqaseem.repository.UserRepository;
-import com.app.taqaseem.service.CustomUserDetailService;
+import com.app.taqaseem.security.jwt.JWTAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +13,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -40,8 +36,9 @@ public class SecurityConfig {
     "/swagger-ui.html",
   };
   private final JWTAuthorizationFilter jwtAuthorizationFilter;
-  private final CustomUserDetailService customUserDetailService;
+  private final TaqaseemUserDetailsServiceImpl customUserDetailService;
   private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+  private final TaqaseemAuthenticationProvider authenticationProvider;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -54,22 +51,9 @@ public class SecurityConfig {
                     .authenticated())
             .exceptionHandling(exception -> exception.authenticationEntryPoint(customAuthenticationEntryPoint))
         .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-        .authenticationProvider(authenticationProvider())
+        .authenticationProvider(authenticationProvider)
         .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
-  }
-
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
-
-  @Bean
-  public AuthenticationProvider authenticationProvider() {
-    DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-    authenticationProvider.setUserDetailsService(customUserDetailService);
-    authenticationProvider.setPasswordEncoder(passwordEncoder());
-    return authenticationProvider;
   }
 
   @Bean

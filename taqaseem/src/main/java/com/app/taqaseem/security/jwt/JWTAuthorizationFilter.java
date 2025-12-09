@@ -1,6 +1,8 @@
-package com.app.taqaseem.jwt;
+package com.app.taqaseem.security.jwt;
 
 import com.app.taqaseem.exception.InvalidJwtErrorException;
+import com.app.taqaseem.security.TaqaseemUserDetailService;
+import com.app.taqaseem.security.TaqaseemUserDetails;
 import com.app.taqaseem.util.RedisUtil;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
@@ -28,7 +30,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Slf4j
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
     private final JWTUtil jwtUtil;
-    private final UserDetailsService userDetailsService;
+    private final TaqaseemUserDetailService userDetailsService;
     private final RedisUtil redisUtil;
     private final HandlerExceptionResolver handlerExceptionResolver;
 
@@ -50,7 +52,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             }
 
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(phoneNumber);
+                TaqaseemUserDetails userDetails = this.userDetailsService.loadUserByPhoneNumber(phoneNumber);
 
                 if (!jwtUtil.isTokenValid(jwt, userDetails) || !redisUtil.isActiveAccessToken(jwt, phoneNumber)) {
                     log.error("Invalid access token");

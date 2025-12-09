@@ -1,4 +1,4 @@
-package com.app.taqaseem.otp;
+package com.app.taqaseem.security.otp;
 
 public interface OTPProvider {
   String sendOTP(String phoneNumber);

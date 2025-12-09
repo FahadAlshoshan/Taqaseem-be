@@ -1,4 +1,4 @@
-package com.app.taqaseem.config;
+package com.app.taqaseem.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,6 +1,5 @@
-package com.app.taqaseem.otp;
+package com.app.taqaseem.security.otp;
 
-import com.app.taqaseem.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

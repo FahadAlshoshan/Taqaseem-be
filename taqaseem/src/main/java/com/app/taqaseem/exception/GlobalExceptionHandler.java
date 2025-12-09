@@ -1,13 +1,7 @@
 package com.app.taqaseem.exception;
 
-import com.app.taqaseem.dto.ApiResponse;
 import com.app.taqaseem.dto.ChangeNameResponseDTO;
 import com.app.taqaseem.dto.ErrorResponse;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -73,4 +67,9 @@ public class GlobalExceptionHandler {
             .body(ErrorResponse.of(HttpStatus.BAD_REQUEST, message));
   }
 
+  @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleUsernameAlreadyExistsException(UserAlreadyExistsException ex) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+              .body(ErrorResponse.of(HttpStatus.UNAUTHORIZED, ex.getMessage()));
+  }
 }

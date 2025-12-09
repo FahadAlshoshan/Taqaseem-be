@@ -1,4 +1,4 @@
-package com.app.taqaseem.jwt;
+package com.app.taqaseem.security.jwt;
 
 import com.app.taqaseem.exception.InvalidJwtErrorException;
 import com.app.taqaseem.model.UserInfo;
