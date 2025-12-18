@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 public interface TaqaseemUserDetails extends Serializable {
-    Long getId();
+    String getId();
     String getPhoneNumber();
     String getUsername();
     String getName();

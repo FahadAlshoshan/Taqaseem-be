@@ -1,24 +1,24 @@
 package com.app.taqaseem.security.otp;
 
-import com.app.taqaseem.security.jwt.JWTService;
+import com.app.taqaseem.security.jwt.impl.CustomAuthenticationService;
 import com.app.taqaseem.model.UserInfo;
 import com.app.taqaseem.repository.UserRepository;
 import com.app.taqaseem.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.app.taqaseem.constant.Messages.*;
 
 @Service
 @RequiredArgsConstructor
+@Profile("!local-clerk")
 public class OTPService {
   private final RedisUtil redisUtil;
   private final OTPProvider otpProvider;
-  private final JWTService jwtService;
+  private final CustomAuthenticationService authService;
   private final UserRepository userRepository;
 
   public void generateOTP(OTPGenerateRequestDTO otpGenerateRequestDTO) {
@@ -40,7 +40,7 @@ public class OTPService {
                 }
             });
 
-            return OTPAuthenticateResponseDTO.builder().isAuthenticated(true).isRegistered(userInfo.isRegistered()).messageEN(SUCCESSFUL_OTP_AUTHENTICATION_MESSAGE_EN).messageAR(SUCCESSFUL_OTP_AUTHENTICATION_MESSAGE_AR).jwt(jwtService.generateNewAccessAndRefreshTokenForUser(userInfo)).build();
+            return OTPAuthenticateResponseDTO.builder().isAuthenticated(true).isRegistered(userInfo.isRegistered()).messageEN(SUCCESSFUL_OTP_AUTHENTICATION_MESSAGE_EN).messageAR(SUCCESSFUL_OTP_AUTHENTICATION_MESSAGE_AR).jwt(authService.generateNewTokensForUser(userInfo)).build();
         }
         return OTPAuthenticateResponseDTO.builder().isAuthenticated(false).isRegistered(false).messageEN(UNSUCCESSFUL_OTP_AUTHENTICATION_MESSAGE_EN).messageAR(UNSUCCESSFUL_OTP_AUTHENTICATION_MESSAGE_AR).jwt(null).build();
     }

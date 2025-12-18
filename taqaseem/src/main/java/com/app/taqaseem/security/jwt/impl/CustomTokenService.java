@@ -1,7 +1,10 @@
-package com.app.taqaseem.security.jwt;
+package com.app.taqaseem.security.jwt.impl;
 
 import com.app.taqaseem.exception.InvalidJwtErrorException;
+import com.app.taqaseem.security.TaqaseemUserDetailService;
 import com.app.taqaseem.security.TaqaseemUserDetails;
+import com.app.taqaseem.security.jwt.TokenService;
+import com.app.taqaseem.util.RedisUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -13,15 +16,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
 @Log4j2
-public class JWTUtil {
+@RequiredArgsConstructor
+@Profile("!local-clerk")
+public class CustomTokenService implements TokenService {
   private final int MS_IN_MINUTE = 60000;
+  private final TaqaseemUserDetailService userDetailsService;
+  private final RedisUtil redisUtil;
 
   @Value("${application.security.jwt.secret-key}")
   private String secretKey;
@@ -32,13 +40,13 @@ public class JWTUtil {
   @Value("${application.security.jwt.refresh-token.expiration}")
   private long refreshExpiration;
 
-  public String extractPhoneNumber(String token) {
+  @Override
+  public String extractUserIdentifier(String token) {
     try {
       return extractClaim(token, Claims::getSubject);
-    } catch (MalformedJwtException e){
-        throw new InvalidJwtErrorException("Malformed JWT token");
-    }
-    catch (Exception e) {
+    } catch (MalformedJwtException e) {
+      throw new InvalidJwtErrorException("Malformed JWT token");
+    } catch (Exception e) {
       log.error("Error extracting phone number", e);
       throw new InvalidJwtErrorException(e.getMessage());
     }
@@ -49,14 +57,17 @@ public class JWTUtil {
     return claimsResolver.apply(claims);
   }
 
+  @Override
   public String generateAccessToken(TaqaseemUserDetails userDetails) {
     return generateAccessToken(new HashMap<>(), userDetails);
   }
 
-  public String generateAccessToken(Map<String, Object> extraClaims, TaqaseemUserDetails userDetails) {
+  public String generateAccessToken(
+      Map<String, Object> extraClaims, TaqaseemUserDetails userDetails) {
     return buildToken(extraClaims, userDetails, jwtExpiration);
   }
 
+  @Override
   public String generateRefreshToken(TaqaseemUserDetails userDetails) {
     return buildToken(new HashMap<>(), userDetails, refreshExpiration);
   }
@@ -72,9 +83,21 @@ public class JWTUtil {
         .compact();
   }
 
-  public boolean isTokenValid(String token, TaqaseemUserDetails userDetails) {
-    final String phoneNumber = extractPhoneNumber(token);
-    return (phoneNumber.equals(userDetails.getPhoneNumber())) && !isTokenExpired(token);
+  @Override
+  public boolean isTokenInvalid(String token, TaqaseemUserDetails userDetails) {
+    final String phoneNumber = extractUserIdentifier(token);
+    return (!phoneNumber.equals(userDetails.getPhoneNumber())) || isTokenExpired(token);
+  }
+
+  @Override
+  public boolean isTokenInactive(String token, String phoneNumber) {
+    return !redisUtil.isActiveAccessToken(token, phoneNumber);
+  }
+
+  @Override
+  public TaqaseemUserDetails getUserDetailsFromToken(String token) {
+    String phoneNumber = extractUserIdentifier(token);
+    return userDetailsService.loadUserByPhoneNumber(phoneNumber);
   }
 
   private boolean isTokenExpired(String token) {

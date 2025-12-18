@@ -3,11 +3,14 @@ package com.app.taqaseem.config;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -21,16 +24,14 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Slf4j
 @Configuration(enforceUniqueMethods = false)
+@Profile("!local-clerk")
+@RequiredArgsConstructor
 @EnableCaching
 public class RedisConfig {
   public static final String ACTIVE_TOKENS_CACHE_NAME = "ActiveTokens";
   public static final String OTP_CACHE_NAME = "OTP";
 
   private final RedisProperties redisProperties;
-
-  public RedisConfig(RedisProperties redisProperties) {
-    this.redisProperties = redisProperties;
-  }
 
   @Bean
   public LettuceConnectionFactory redisConnectionFactory() {

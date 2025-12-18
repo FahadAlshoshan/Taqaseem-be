@@ -5,21 +5,20 @@ import static com.app.taqaseem.config.RedisConfig.OTP_CACHE_NAME;
 
 import com.app.taqaseem.exception.CustomRedisException;
 import java.util.Objects;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
+@Profile("!local-clerk & !dev-clerk & !prod-clerk")
+@RequiredArgsConstructor
 public class RedisUtil {
   private final CacheManager cacheManager;
-  private final RedisTemplate<String, String> redisTemplate;
-
-  public RedisUtil(CacheManager cacheManager, RedisTemplate<String, String> redisTemplate) {
-    this.cacheManager = cacheManager;
-    this.redisTemplate = redisTemplate;
-  }
 
   public boolean isActiveAccessToken(String accessToken, String phoneNumber) {
     try {

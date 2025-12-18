@@ -2,7 +2,6 @@ package com.app.taqaseem.exception;
 
 import com.app.taqaseem.dto.ChangeNameResponseDTO;
 import com.app.taqaseem.dto.ErrorResponse;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.core.annotation.Order;
@@ -42,7 +41,13 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(InvalidJwtErrorException.class)
-  public ResponseEntity<ErrorResponse> handleInvalidJwtErrorException(InvalidJwtErrorException ex, HttpServletRequest request) {
+  public ResponseEntity<ErrorResponse> handleInvalidJwtErrorException(InvalidJwtErrorException ex) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(ErrorResponse.of(HttpStatus.UNAUTHORIZED, ex.getMessage()));
+  }
+
+  @ExceptionHandler(UserAuthenticationException.class)
+  public ResponseEntity<ErrorResponse> handleUserAuthenticationException(UserAuthenticationException ex) {
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
             .body(ErrorResponse.of(HttpStatus.UNAUTHORIZED, ex.getMessage()));
   }

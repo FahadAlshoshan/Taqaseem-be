@@ -27,7 +27,7 @@ public class TaqaseemUserDetailsServiceImpl implements TaqaseemUserDetailService
     }
 
     @Override
-    public TaqaseemUserDetails loadUserById(Long id) {
+    public TaqaseemUserDetails loadUserById(String id) {
         return userRepository
                 .findById(id)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND_MESSAGE_EN, USER_NOT_FOUND_MESSAGE_AR));    }

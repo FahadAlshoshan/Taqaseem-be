@@ -4,8 +4,7 @@ import static com.app.taqaseem.constant.SwaggerApiExamples.API_EXAMPLE_200_REFRE
 import static com.app.taqaseem.constant.SwaggerApiExamples.API_EXAMPLE_401_REFRESH_JWT;
 import static org.springframework.http.HttpStatus.OK;
 
-import com.app.taqaseem.dto.ChangeNameRequestDTO;
-import com.app.taqaseem.dto.ChangeNameResponseDTO;
+import com.app.taqaseem.security.jwt.impl.CustomAuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -14,7 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,8 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/auth/jwt")
+@Profile("!local-clerk")
 public class JWTController {
-  private final JWTService jwtService;
+  private final CustomAuthenticationService authService;
 
   @PostMapping("/refresh")
   @Operation(
@@ -60,13 +60,6 @@ public class JWTController {
             })
       })
   public ResponseEntity<?> refreshToken(@Valid @RequestBody JWTDTO jwtDTO) {
-    return new ResponseEntity<>(jwtService.generateAccessTokenAndInvalidatePrevious(jwtDTO), OK);
+    return new ResponseEntity<>(authService.refreshAccessToken(jwtDTO), OK);
   }
-
-
-    @PostMapping("/changeName")
-  public ResponseEntity<?> changeName(@Valid @RequestBody ChangeNameRequestDTO changeNameRequestDTO) {
-      System.out.println(changeNameRequestDTO);
-        return new ResponseEntity<>(ChangeNameResponseDTO.builder().messageAR("1").messageEN("1").build(), HttpStatus.OK);
-    }
 }

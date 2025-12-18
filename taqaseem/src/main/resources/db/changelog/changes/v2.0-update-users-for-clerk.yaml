@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2-add-new-user-fields
+      author: Fahad
+      changes:
+        - addColumn:
+            tableName: USERS
+            columns:
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+
+        - dropNotNullConstraint:
+            tableName: USERS
+            columnName: phone_number
+            columnDataType: varchar(15)
+
+      rollback:
+        - dropColumn:
+            tableName: USERS
+            columns:
+              - column:
+                  name: email
+        - addNotNullConstraint:
+            tableName: USERS
+            columnName: phone_number
+            columnDataType: varchar(15)

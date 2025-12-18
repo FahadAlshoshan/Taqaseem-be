@@ -8,8 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: ID
-                  type: bigint
-                  autoIncrement: true
+                  type: VARCHAR
                   constraints:
                     primaryKey: true
                     nullable: false

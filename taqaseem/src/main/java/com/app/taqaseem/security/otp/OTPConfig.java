@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration(enforceUniqueMethods = false)
+@Profile("!local-clerk")
 public class OTPConfig {
 
   @Bean("otpProvider")
